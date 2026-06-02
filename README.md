@@ -1,54 +1,55 @@
----
-title: AI Video Generator — Google Veo
-emoji: 🎬
-colorFrom: violet
-colorTo: pink
-sdk: gradio
-sdk_version: "4.44.0"
-app_file: app.py
-pinned: false
-license: mit
----
+# Text PPT Video Creation
 
-# 🎬 AI Video Generator — Google Veo + Gradio
+This folder contains the public-ready source code for the AI-powered PPT generation app.
+It includes only the scripts needed to build the presentation generator, not any generated output files.
 
-Generate high-quality AI videos from text prompts using **Google Veo 3** (latest) or **Veo 2**, wrapped in a clean **Gradio** UI and deployed for free on **Hugging Face Spaces**.
+## What is included
+- `ppt_agent/` source files for the PPT agent
+- `requirements.txt` with the Python dependencies
+- `README.md` with usage guidance
+- `.gitignore` to exclude private files and generated outputs
+- `.env.example` with placeholder environment variable names
 
-## 🚀 Features
-- Text-to-video generation with Google Veo 3.1 / 3.0 / 2.0
-- Configurable aspect ratio (16:9, 9:16, 1:1)
-- Adjustable duration (4 – 8 seconds)
-- Negative prompt support
-- AI-powered prompt enhancement
-- Download generated MP4s
+## Important
+This folder does not contain any real API keys or private credentials.
 
-## 🔑 Setup
+## About the Text → PPT → Video Agent
+This app converts a simple text topic into a complete presentation and optionally into a video.
 
-### Local
-```bash
-git clone <your-repo>
-cd ai-video-generator
-pip install -r requirements.txt
-cp .env.example .env          # then fill in your key
-python app.py
-```
+The process includes:
+- **AI slide generation**: The agent uses an LLM to create titles, bullet points, section headers, quotes, and closing slides from your prompt.
+- **Slide formatting**: The app converts the AI output into a polished PowerPoint presentation with consistent layouts and theme styling.
+- **Narration audio**: Optionally, speaker notes are turned into voice narration and embedded into each slide.
+- **Video export**: If Microsoft PowerPoint is installed on Windows, the app can export the final PPTX as an MP4 video with synced audio.
 
-### Hugging Face Spaces
-1. Fork / push this repo to a new Space (SDK = Gradio).
-2. Add your `GEMINI_API_KEY` in **Settings → Secrets**.
-3. The Space will install deps and launch automatically.
+This makes it easy to go from a single idea to a fully designed presentation and shareable video.
 
-## 📋 Requirements
-- Python 3.10+
-- A **Google AI Studio** API key with Veo access (Paid Tier required for video generation)
-  → [Get your key](https://aistudio.google.com/app/apikey)
+## Setup
+1. Copy `.env.example` to `.env`.
+2. Add your own keys to `.env`.
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run the app:
+   ```bash
+   python -m ppt_agent.agent
+   ```
 
-## 🛠️ Project Structure
-```
-ai-video-generator/
-├── app.py              # Main Gradio application
-├── requirements.txt    # Python dependencies
-├── README.md           # This file (also the HF Space config)
-├── .env.example        # Environment variable template
-└── outputs/            # Generated videos saved here (local)
-```
+## If the port is busy
+- The app tries to use port `7861` by default.
+- If that port is already in use, it will automatically try the next available port.
+- To force a port, set:
+  ```bash
+  set GRADIO_SERVER_PORT=7870
+  python -m ppt_agent.agent
+  ```
+
+## Required environment variables
+- `GEMINI_API_KEY`
+- `NVIDIA_NIM_API_KEY`
+
+## Notes
+- Do not commit `.env` to GitHub.
+- Keep your real API keys private.
+- This folder is safe to share publicly because it does not include any `.env` or generated output files.
